@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapsys - Fortaleza Digital do Pensamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #0f0f0f;
+            --text: #ffffff;
+            --text-secondary: #bbbbbb;
+            --accent: #229bec;
+            --glow: 0 0 25px rgba(34, 155, 236, 0.5);
+            --glow-strong: 0 0 50px rgba(34, 155, 236, 0.7);
+            --radius: 28px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+            text-align: center;
+        }
+
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 50px;
+        }
+
+        /* Neon Title */
+        .neon-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin: 20px 0 10px 0;
+        }
+
+        .neon-title span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: neonRise 1.8s ease-out forwards, neonPulse 3s infinite alternate;
+        }
+
+        .neon-title span:nth-child(n) {
+            animation-delay: calc(0.1s * var(--i));
+        }
+
+        @keyframes neonRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                text-shadow: var(--glow), 0 0 50px rgba(34, 155, 236, 0.6);
+            }
+        }
+
+        @keyframes neonPulse {
+            from {
+                text-shadow: var(--glow);
+            }
+
+            to {
+                text-shadow: var(--glow-strong);
+            }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .hero-subtitle {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 20px 0 40px 0;
+            text-shadow: var(--glow);
+        }
+
+        .hero p {
+            font-size: 1.35rem;
+            max-width: 950px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .mascote {
+            width: 240px;
+            margin: 40px 0;
+            filter: drop-shadow(var(--glow-strong));
+            transition: transform 0.6s;
+        }
+
+        .mascote:hover {
+            transform: scale(1.08) rotate(2deg);
+        }
+
+        /* Botões aprimorados */
+        .btn-wrapper {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 20px 56px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: var(--glow);
+            min-width: 280px;
+        }
+
+        .btn:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: var(--glow-strong);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 3px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: var(--glow-strong);
+        }
+
+        /* Fade-in */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 45px 30px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease-out;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: var(--glow-strong), 0 30px 60px rgba(34, 155, 236, 0.3);
+        }
+
+        .card img {
+            width: 110px;
+            margin-bottom: 24px;
+            transition: all 0.5s;
+        }
+
+        .card:hover img {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 60px 40px;
+            border-radius: var(--radius);
+            max-width: 850px;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s ease-out;
+            box-shadow: var(--glow-strong);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: var(--accent);
+            margin-bottom: 30px;
+            font-size: 2.4rem;
+        }
+
+        /* Creator */
+        .creator p {
+            font-size: 1.35rem;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* Newsletter */
+        .newsletter-form {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input[type="email"] {
+            width: 100%;
+            padding: 24px;
+            background: var(--card-bg);
+            border: 3px solid var(--accent);
+            border-radius: 16px;
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            transition: all 0.4s;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            box-shadow: var(--glow-strong);
+            transform: scale(1.02);
+        }
+
+        .newsletter-form .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .newsletter-form .checkbox-wrapper input[type="checkbox"] {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .newsletter-form .checkbox-wrapper input[type="checkbox"]:checked {
+            background: var(--accent);
+            box-shadow: var(--glow);
+        }
+
+        .newsletter-form button {
+            width: 100%;
+            padding: 22px;
+            font-size: 1.3rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .neon-title {
+                font-size: 3.4rem;
+                letter-spacing: 6px;
+            }
+
+            .hero-subtitle {
+                font-size: 2rem;
+            }
+
+            .btn-wrapper {
+                flex-direction: column;
+            }
+
+            .btn,
+            .btn-secondary {
+                min-width: auto;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero -->
+    <section class="hero fade-section">
+        <div class="container">
+            <div class="neon-title">
+                <span style="--i:1">S</span><span style="--i:2">y</span><span style="--i:3">n</span><span
+                    style="--i:4">a</span><span style="--i:5">p</span><span style="--i:6">s</span><span
+                    style="--i:7">y</span><span style="--i:8">s</span>
+            </div>
+            <p class="hero-subtitle">Fortaleza digital do pensamento</p>
+            <p>Você já parou no meio do feed e pensou: “Como cheguei a acreditar nisso?” Ou viu seu filho voltar da
+                escola repetindo ideias que não fazem sentido? Ou discutiu com alguém e sentiu que estava sendo
+                manipulado sem saber como responder? Essa é a guerra silenciosa de hoje — contra a manipulação na
+                história, na economia, na fé e no pensamento cotidiano. Synapsys é a sua defesa real: uma fortaleza
+                digital que ensina a pensar com clareza, baseada na sabedoria perene da filosofia clássica e na Fé
+                Católica.</p>
+            <img src="https://static.wixstatic.com/media/47c701_6328b7f66ca4461bbf011dc6895adf26~mv2.png"
+                alt="Mascote Synapsys" class="mascote">
+            <div class="btn-wrapper">
+                <a href="https://synapsys.marcioalmeida.co/" class="btn">Entre na fortaleza agora</a>
+                <a href="#newsletter" class="btn btn-secondary">Junte-se à comunidade</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto -->
+    <section class="fade-section">
+        <div class="container">
+            <h2>O Manifesto</h2>
+            <p style="max-width: 950px; margin: 0 auto; font-size: 1.35rem;">Estamos em uma guerra silenciosa pela sua
+                mente. A confusão é estratégia. A verdade virou “opinião”. A educação virou doutrinação. Synapsys não é
+                neutro: é o campo de treinamento para restaurar a ordem da inteligência — contra o revisionismo
+                histórico, a manipulação econômica, as narrativas que atacam a fé e o pensamento crítico. Fundado na
+                rocha inabalável da Fé Católica Apostólica Romana e da filosofia perene de Aristóteles a Santo Tomás de
+                Aquino.</p>
+        </div>
+    </section>
+
+    <!-- Creator -->
+    <section style="background: #050505;" class="fade-section">
+        <div class="container creator">
+            <h2>O Arquiteto da Fortaleza</h2>
+            <p style="max-width: 950px; margin: 0 auto; font-size: 1.35rem;">Marcio Almeida foi formado no rigor do
+                Imperial Colégio Pedro II — latim, grego, filosofia, a busca por uma verdade que não muda. Depois,
+                liderou transformações em empresas globais, consertando desordem em dezenas de países. Ele viu a
+                educação clássica ser demolida e o pensamento crítico ser substituído por slogans. Em vez de aceitar,
+                construiu Synapsys do zero: conteúdo, código, design. Uma ferramenta forjada por quem conhece tanto a
+                sabedoria antiga quanto a eficiência moderna — para equipar quem ainda quer lutar pela clareza.</p>
+        </div>
+    </section>
+
+    <!-- Seções -->
+    <section class="fade-section">
+        <div class="container">
+            <h2>Entre na Fortaleza</h2>
+            <div class="grid">
+                <div class="card" onclick="openModal('jornada')">
+                    <img src="https://static.wixstatic.com/media/47c701_fc331f76134c4eb2901485b69502b591~mv2.png"
+                        alt="Jornada">
+                    <h3>Jornada</h3>
+                    <p>O caminho guiado que transforma confusão em clareza.</p>
+                </div>
+                <div class="card" onclick="openModal('arsenal')">
+                    <img src="https://static.wixstatic.com/media/47c701_531243de5fe94e368b845483f7b02cf0~mv2.png"
+                        alt="Arsenal">
+                    <h3>Arsenal</h3>
+                    <p>Ferramentas para identificar e neutralizar manipulações.</p>
+                </div>
+                <div class="card" onclick="openModal('oraculo')">
+                    <img src="https://static.wixstatic.com/media/47c701_87aa084799484c02a42d38949bb0ff19~mv2.png"
+                        alt="Oráculo">
+                    <h3>Oráculo</h3>
+                    <p>Respostas rápidas para desmontar argumentos do dia a dia.</p>
+                </div>
+                <div class="card" onclick="openModal('dossie')">
+                    <img src="https://static.wixstatic.com/media/47c701_10f7864f61bd43b5bb443fef3de1fcf9~mv2.png"
+                        alt="Dossiê">
+                    <h3>Dossiês</h3>
+                    <p>Seu arquivo pessoal de conhecimento conquistado.</p>
+                </div>
+                <div class="card" onclick="openModal('bibliografia')">
+                    <img src="https://static.wixstatic.com/media/47c701_c50781c697fd464a8b6de85579f74f50~mv2.png"
+                        alt="Bibliografia">
+                    <h3>Bibliografia</h3>
+                    <p>As grandes obras que moldaram o mundo real.</p>
+                </div>
+                <div class="card" onclick="openModal('manifesto')">
+                    <img src="https://static.wixstatic.com/media/47c701_a8a7bedd1006474e8c18d0cb7fc0e3ee~mv2.png"
+                        alt="Manifesto">
+                    <h3>Manifesto</h3>
+                    <p>A visão completa da batalha que estamos travando.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section id="newsletter" class="fade-section">
+        <div class="container">
+            <h2>Junte-se à Comunidade</h2>
+            <p style="max-width: 750px; margin: 0 auto 50px; font-size: 1.35rem;">Aqui reunimos quem tem sede de
+                conhecimento verdadeiro — contra a manipulação, em busca de clareza na história, economia, fé e
+                pensamento. Assine e receba capítulos exclusivos, reflexões profundas e convites para a comunidade que
+                está nascendo.</p>
+            <div class="newsletter-form">
+                <input type="email" id="userEmail" placeholder="seu@email.com" required>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="lgpdCheck" required>
+                    <label for="lgpdCheck">Concordo com o processamento de dados (LGPD)</label>
+                </div>
+                <button class="btn" onclick="processNewsletter()">Entrar na comunidade</button>
+                <p id="statusMsg" style="margin-top: 20px; color: var(--accent); font-weight: 600;"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-text"></div>
+        </div>
+    </div>
+
+    <script>
+        // Fade-in on scroll
+        const fadeElements = document.querySelectorAll('.fade-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.querySelector('.grid')) {
+                        entry.target.querySelectorAll('.card').forEach((card, i) => {
+                            card.style.transitionDelay = `${i * 0.1}s`;
+                            card.classList.add('visible');
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Modals com histórias do dia a dia (enriquecidas com temas de história, economia, religião, manipulação)
+        const modals = {
+            jornada: `<h3>Jornada</h3>
+                      <p>Você abre o jornal e vê uma narrativa sobre história ou economia que não bate com o que aprendeu. Ou discute fé com alguém e sente falta de base sólida. A Jornada é o treinamento estruturado que constrói sua cosmovisão do zero — ensinando a pensar com clareza sobre história, economia, religião e vida, nível por nível, como um caminho militar contra a confusão.</p>`,
+            arsenal: `<h3>Arsenal</h3>
+                      <p>Alguém na conversa de família distorce fatos históricos ou econômicos para vencer o argumento. Você identifica a manipulação, mas não tem o nome exato. O Arsenal entrega: falácias, vieses, táticas — ferramentas precisas para desmontar mentiras sobre política, fé ou sociedade.</p>`,
+            oraculo: `<h3>Oráculo</h3>
+                      <p>Uma notícia ou post ataca a fé católica ou reescreve a história. Você quer responder com verdade, sem emoção vazia. O Oráculo dá a pergunta-bisturi perfeita — baseada na tradição católica e lógica perene — para revelar a manipulação na hora.</p>`,
+            dossie: `<h3>Dossiês</h3>
+                      <p>Você descobriu uma verdade profunda sobre economia ou religião e quer guardar para usar depois — com filhos, amigos ou em debates. Os Dossiês são seu arquivo pessoal: organize e acesse sempre que precisar defender o que é certo.</p>`,
+            bibliografia: `<h3>Bibliografia</h3>
+                      <p>Você quer ir além das versões simplificadas da história, economia ou fé. Aqui estão as obras fundamentais — de Aristóteles a pensadores modernos — curadas para quem busca a verdade original, sem filtros manipuladores.</p>`,
+            manifesto: `<h3>Manifesto</h3>
+                      <p>Você sente que o mundo quer que você aceite narrativas prontas sobre tudo — da história à fé. O Manifesto expõe a guerra pela sua mente e chama à resistência: uma fortaleza para quem quer pensar de verdade.</p>`
+        };
+
+        const modal = document.getElementById('modal');
+        const modalText = document.getElementById('modal-text');
+
+        function openModal(id) {
+            modalText.innerHTML = modals[id];
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Newsletter
+        const ADMIN_EMAIL = "siteform@ephata.solutions";
+        async function processNewsletter() {
+            const email = document.getElementById('userEmail').value.trim();
+            const consent = document.getElementById('lgpdCheck').checked;
+            const status = document.getElementById('statusMsg');
+            if (!email || !consent) { status.textContent = 'Preencha todos os campos.'; return; }
+            status.textContent = 'Enviando...';
+            try {
+                await fetch(`https://formsubmit.co/ajax/${ADMIN_EMAIL}`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        _subject: `Nova inscrição Synapsys: ${email}`,
+                        _captcha: "false",
+                        Email: email,
+                        LGPD: "Aceito"
+                    })
+                });
+                status.textContent = 'Inscrito com sucesso. Bem-vindo à comunidade. 🙏';
+                document.getElementById('userEmail').value = '';
+                document.getElementById('lgpdCheck').checked = false;
+            } catch { status.textContent = 'Erro temporário. Tente novamente.'; }
+        }
+    </script>
+</body>
+
+</html>
