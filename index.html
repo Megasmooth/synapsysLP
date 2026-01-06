@@ -100,12 +100,43 @@
         }
 
         .hero-subtitle { 
-            font-size: 2.8rem;     /* Aumentado de 2.4rem para 2.8rem (fica maior e mais impactante) */
-            font-weight: 900;      /* Negrito ainda mais forte (800 já era bom, 900 reforça) */
-            color: var(--accent);  /* Continua azul (#229bec) */
+            font-size: 2.8rem;              /* Tamanho maior para destaque */
+            font-weight: 900;               /* Negrito bem forte */
+            color: var(--accent);           /* Azul #229bec */
             margin: 20px 0 40px 0; 
-            text-shadow: 0 0 30px rgba(34, 155, 236, 0.6); /* Glow um pouco mais forte para destacar */
-            letter-spacing: 2px;   /* Opcional: dá um ar mais premium */
+            text-align: center;
+            opacity: 0;                     /* Começa invisível para animação */
+            animation: fadeInGlow 2s ease-out forwards; /* Animação: fade-in + glow pulsante */
+            text-shadow: 0 0 20px rgba(34, 155, 236, 0.4); /* Glow inicial */
+            letter-spacing: 2px;            /* Ar premium */
+        }
+        
+        @keyframes fadeInGlow {
+            0% {
+                opacity: 0;
+                text-shadow: none;
+                transform: translateY(20px);
+            }
+            70% {
+                opacity: 1;
+                text-shadow: 0 0 40px rgba(34, 155, 236, 0.8); /* Glow forte no meio */
+            }
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 30px rgba(34, 155, 236, 0.6), 0 0 50px rgba(34, 155, 236, 0.4); /* Glow pulsante final */
+                transform: translateY(0);
+            }
+        }
+        
+        /* Pulsar contínuo após aparecer (opcional, para mais vida) */
+        .hero-subtitle::after {
+            content: '';
+            animation: pulseGlow 3s infinite alternate;
+        }
+        
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 30px rgba(34, 155, 236, 0.6); }
+            to { text-shadow: 0 0 50px rgba(34, 155, 236, 0.9); }
         }
         
         .hero p {
@@ -560,3 +591,4 @@
 
 
 </html>
+
